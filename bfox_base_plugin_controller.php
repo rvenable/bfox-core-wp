@@ -17,6 +17,8 @@ class BfoxBasePluginController {
 		$this->buildVersion = $buildVersion;
 
 		$this->addAction('init', 'wpInit');
+		$this->addAction('admin_menu', 'wpAdminMenu');
+		$this->addAction('network_admin_menu', 'wpNetworkAdminMenu');
 
 		$this->init();
 	}
@@ -45,6 +47,12 @@ class BfoxBasePluginController {
 	}
 
 	function wpInit() {
+	}
+
+	function wpAdminMenu() {
+	}
+
+	function wpNetworkAdminMenu() {
 	}
 }
 
