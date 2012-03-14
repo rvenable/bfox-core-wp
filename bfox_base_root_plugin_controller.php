@@ -1,6 +1,16 @@
 <?php
 
-class BfoxBasePluginController {
+/**
+ * Serves as the base controller for all Root plugin controllers
+ *
+ * BfoxCoreController and BfoxRootPluginController extend from this, so this
+ * class provides shared functionality between them, without BfoxCoreController
+ * needing to take everything that BfoxRootPluginController provides.
+ *
+ * @author richard
+ *
+ */
+class BfoxBaseRootPluginController extends BfoxPluginController {
 
 	var $slug;
 	var $prefix;
@@ -16,23 +26,7 @@ class BfoxBasePluginController {
 		$this->version = $version;
 		$this->buildVersion = $buildVersion;
 
-		$this->addAction('init', 'wpInit');
-		$this->addAction('admin_menu', 'wpAdminMenu');
-		$this->addAction('network_admin_menu', 'wpNetworkAdminMenu');
-
-		$this->init();
-	}
-
-	function functionWithName($functionName) {
-		return array(&$this, $functionName);
-	}
-
-	function addAction($tag, $functionToAdd, $priority = 10, $acceptedArgs = 1) {
-		return add_action($tag, $this->functionWithName($functionToAdd), $priority, $acceptedArgs);
-	}
-
-	function addFilter($tag, $functionToAdd, $priority = 10, $acceptedArgs = 1) {
-		return add_filter($tag, $this->functionWithName($functionToAdd), $priority, $acceptedArgs);
+		parent::__construct();
 	}
 
 	function init() {
@@ -40,19 +34,6 @@ class BfoxBasePluginController {
 		$this->apiDir = $this->dir . '/api';
 
 		$this->url = WP_PLUGIN_URL . '/' . $this->slug;
-	}
-
-	function filterName($filter) {
-		return $this->prefix . '_' . $filter;
-	}
-
-	function wpInit() {
-	}
-
-	function wpAdminMenu() {
-	}
-
-	function wpNetworkAdminMenu() {
 	}
 }
 

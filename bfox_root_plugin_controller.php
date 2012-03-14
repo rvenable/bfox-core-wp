@@ -1,6 +1,12 @@
 <?php
 
-class BfoxPluginController extends BfoxBasePluginController {
+/**
+ * All Biblefox plugins have a root controller which extends from this class
+ *
+ * @author richard
+ *
+ */
+class BfoxRootPluginController extends BfoxBaseRootPluginController {
 
 	var $core;
 

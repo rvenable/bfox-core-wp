@@ -1,6 +1,15 @@
 <?php
 
-class BfoxCoreController extends BfoxBasePluginController {
+/**
+ * This class provides the core functionality behind all Biblefox plugins
+ *
+ * The shared instance of this class is usually accessed through the global
+ * $bfox variable, or in plugin controllers via the $core property.
+ *
+ * @author richard
+ *
+ */
+class BfoxCoreController extends BfoxBaseRootPluginController {
 
 	var $refDir;
 

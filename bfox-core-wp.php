@@ -33,8 +33,9 @@ Text Domain: bfox
 
 *************************************************************************/
 
-require_once dirname(__FILE__) . '/bfox_base_plugin_controller.php';
 require_once dirname(__FILE__) . '/bfox_plugin_controller.php';
+require_once dirname(__FILE__) . '/bfox_base_root_plugin_controller.php';
+require_once dirname(__FILE__) . '/bfox_root_plugin_controller.php';
 require_once dirname(__FILE__) . '/bfox_core_controller.php';
 
 function bfox_load() {
