@@ -17,10 +17,6 @@ class BfoxPluginController {
 	}
 
 	function init() {
-		$this->dir = WP_PLUGIN_DIR . '/' . $this->slug;
-		$this->apiDir = $this->dir . '/api';
-
-		$this->url = WP_PLUGIN_URL . '/' . $this->slug;
 	}
 
 	function filterParams() {
