@@ -13,37 +13,39 @@ class BfoxPluginController {
 
 	function __construct() {
 		$this->init();
-		$this->_autoAddWPFilters($this->filterParams());
+		$this->_autoAddWPFilters();
 	}
 
 	function init() {
 	}
 
-	function filterParams() {
-		return array();
-	}
-
-	private function _autoAddWPFilters($filterParams) {
+	private function _autoAddWPFilters() {
 		$methods = get_class_methods($this);
 		$prefix = 'wp';
 		foreach ($methods as $method) {
 			if (self::strHasPrefix($method, $prefix)) {
-				$filterName = self::camelCaseToUnderScore($method);
-				$filterName = substr($filterName, strlen($prefix) + 1); // +1 for the underscore
+				$filterName = self::camelCaseToUnderscore($method);
+				$filterName = substr($filterName, strlen($prefix));
 
-				if (isset($filterParams[$method])) {
-					$params = $filterParams[$method];
-					if (!isset($params[1])) $params[1] = 1;
-					$this->addFilter($filterName, $this->functionWithName($method), $params[0], $params[1]);
+				$numParams = 1;
+				$matches = array();
+				if (preg_match('/^(\d+)/', $filterName, $matches)) {
+					$numParams = intval($matches[1]);
+					$filterName = substr($filterName, strlen($matches[1]));
+				}
+				$filterName = ltrim($filterName, '_');
+
+				if ($numParams > 1) {
+					$this->addFilter($filterName, $method, 10, $numParams);
 				}
 				else {
-					$this->addFilter($filterName, $this->functionWithName($method));
+					$this->addFilter($filterName, $method);
 				}
 			}
 		}
 	}
 
-	static function camelCaseToUnderScore($str) {
+	static function camelCaseToUnderscore($str) {
 		// http://www.mrleong.net/74/php-camel-case-to-underscore/
 		return strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $str));
 	}
