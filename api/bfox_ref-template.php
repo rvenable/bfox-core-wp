@@ -37,50 +37,6 @@ function bfox_ref_links(BfoxRef $ref, $options = array()) {
 	return $str;
 }
 
-function bfox_ref_link($ref_str, $options = array()) {
-	if (empty($ref_str)) return false;
-
-	$defaults = array(
-		'href' => '',
-		'class' => array(),
-		'text' => $ref_str,
-	);
-
-	$refController = BfoxRefController::sharedInstance();
-	$defaults = wp_parse_args($refController->currentDefaults(), $defaults);
-
-	extract(wp_parse_args($options, $defaults));
-
-	// href
-	if (empty($href)) $href = bfox_ref_url($ref_str);
-	$attrs['href'] = $href;
-
-	// class
-	$class = (array) $class;
-	$class []= $attrs['class'];
-	$attrs['class'] = implode(' ', $class);
-
-	if (!isset($attrs['data-ref'])) $attrs['data-ref'] = $ref_str;
-
-	// Attribute string
-	$attr_str = '';
-	foreach ($attrs as $attr => $value) $attr_str .= " $attr='$value'";
-
-	return "<a$attr_str>$text</a>";
-}
-
-/**
- * Replaces bible references with bible links in a given html string
- * @param string $content
- * @return string
- */
-function bfox_ref_replace_html($content, $callback = 'bfox_ref_replace_html_cb') {
-	return BfoxRefParser::simple_html($content, null, $callback);
-}
-	function bfox_ref_replace_html_cb($text, $ref) {
-		return bfox_ref_link($ref->get_string(), array('text' => $text));
-	}
-
 function list_bfox_ref_chapters(BfoxRef $ref = null, $options = array()) {
 	$defaults = array(
 		'format' => BibleMeta::name_none,

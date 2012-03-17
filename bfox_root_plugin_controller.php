@@ -8,6 +8,9 @@
  */
 class BfoxRootPluginController extends BfoxBaseRootPluginController {
 
+	/**
+	 * @var BfoxCoreController
+	 */
 	var $core;
 
 	function __construct($core, $slug, $prefix, $version, $buildVersion) {
