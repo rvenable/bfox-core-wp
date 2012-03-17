@@ -9,22 +9,19 @@
  * @author richard
  *
  */
-class BfoxPluginController {
+class BfoxPluginController extends BfoxObject {
 
 	function __construct() {
-		$this->init();
+		parent::__construct();
 		$this->_autoAddWPFilters();
-	}
-
-	function init() {
 	}
 
 	private function _autoAddWPFilters() {
 		$methods = get_class_methods($this);
 		$prefix = 'wp';
 		foreach ($methods as $method) {
-			if (self::strHasPrefix($method, $prefix)) {
-				$filterName = self::camelCaseToUnderscore($method);
+			if (BfoxString::strHasPrefix($method, $prefix)) {
+				$filterName = BfoxString::camelCaseToUnderscore($method);
 				$filterName = substr($filterName, strlen($prefix));
 
 				$numParams = 1;
@@ -43,33 +40,6 @@ class BfoxPluginController {
 				}
 			}
 		}
-	}
-
-	static function camelCaseToUnderscore($str) {
-		// http://www.mrleong.net/74/php-camel-case-to-underscore/
-		return strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $str));
-	}
-
-	static function strHasPrefix($str, $prefix) {
-		// Efficient string prefix detection - http://blog.client9.com/2007/10/php-string-startswith-let-me-count-ways.html
-		return strncmp($str, $prefix, strlen($prefix)) == 0;
-
-	}
-
-	function functionWithName($functionName) {
-		return array(&$this, $functionName);
-	}
-
-	function addAction($tag, $functionToAdd, $priority = 10, $acceptedArgs = 1) {
-		return add_action($tag, $this->functionWithName($functionToAdd), $priority, $acceptedArgs);
-	}
-
-	function addFilter($tag, $functionToAdd, $priority = 10, $acceptedArgs = 1) {
-		return add_filter($tag, $this->functionWithName($functionToAdd), $priority, $acceptedArgs);
-	}
-
-	function filterName($filter) {
-		return $this->prefix . '_' . $filter;
 	}
 }
 
