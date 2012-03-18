@@ -23,6 +23,8 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 	 */
 	var $tools = null;
 
+	var $javaScriptVars = array();
+
 	function init() {
 		parent::init();
 
@@ -33,7 +35,11 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 		require_once $this->apiDir . '/bfox_ref-functions.php';
 		require_once $this->apiDir . '/bfox_ref-template.php';
 
-		$this->pushRefLinker($this->basicLinker());
+		// declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
+		// See: http://www.garyc40.com/2010/03/5-tips-for-using-ajax-in-wordpress/
+		$this->javaScriptVars = array(
+			'ajaxurl' => admin_url('admin-ajax.php'),
+		);
 	}
 
 	private $linkerStack = array();
@@ -145,6 +151,12 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 		$ref = new BfoxRef;
 		BfoxRefParser::simple_html($content, $ref);
 		return $ref;
+	}
+
+	function wpInit() {
+		$this->pushRefLinker($this->basicLinker());
+
+		wp_localize_script('bfox_core', 'BfoxCore', $this->javaScriptVars);
 	}
 }
 
