@@ -44,9 +44,11 @@ require_once dirname(__FILE__) . '/bfox_core_controller.php';
 
 function bfox_load() {
 	global $bfox;
-	$bfox = new BfoxCoreController('bfox-core-wp', 'bfox', '1.0', 1);
-
-	do_action('bfox_load', &$bfox);
+	if (is_null($bfox)) {
+		$bfox = new BfoxCoreController('bfox-core-wp', 'bfox', '1.0', 1);
+		do_action('bfox_load', &$bfox);
+	}
+	return $bfox;
 }
 add_action('plugins_loaded', 'bfox_load');
 
