@@ -13,6 +13,31 @@ class BfoxRefLinker extends BfoxObject {
 		);
 	}
 
+	function addAttributeValue($attribute, $value) {
+		if (!isset($this->attributeValues[$attribute])) $this->attributeValues[$attribute] = array();
+
+		if (!in_array($value, (array) $this->attributeValues[$attribute])) {
+			$this->attributeValues[$attribute] []= $value;
+		}
+	}
+
+	function removeAttributeValue($attribute, $value) {
+		if (!isset($this->attributeValues[$attribute])) return;
+
+		$key = array_search($value, $this->attributeValues[$attribute]);
+		if (false !== $key) {
+			array_splice($this->attributeValues[$attribute], $key, 1);
+		}
+	}
+
+	function addClass($class) {
+		$this->addAttributeValue('class', $class);
+	}
+
+	function removeClass($class) {
+		$this->removeAttributeValue('class', $class);
+	}
+
 	function urlForRefStr($refStr) {
 		return urlencode(strtolower($refStr));
 	}

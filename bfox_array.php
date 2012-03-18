@@ -14,6 +14,10 @@ class BfoxArray {
 			if (!isset($array[$key])) {
 				$array[$key] = $value;
 			}
+			else if (is_array($value)) {
+				// If the value is an array, we can merge it into the existing value
+				$array[$key] = array_merge((array)$array[$key], $value);
+			}
 		}
 		return $array;
 	}
