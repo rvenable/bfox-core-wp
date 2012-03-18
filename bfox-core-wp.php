@@ -37,6 +37,7 @@ require_once dirname(__FILE__) . '/bfox_object.php';
 require_once dirname(__FILE__) . '/bfox_array.php';
 require_once dirname(__FILE__) . '/bfox_html.php';
 require_once dirname(__FILE__) . '/bfox_string.php';
+require_once dirname(__FILE__) . '/bfox_options.php';
 require_once dirname(__FILE__) . '/bfox_plugin_controller.php';
 require_once dirname(__FILE__) . '/bfox_base_root_plugin_controller.php';
 require_once dirname(__FILE__) . '/bfox_root_plugin_controller.php';
