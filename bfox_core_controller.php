@@ -23,6 +23,11 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 	 */
 	var $tools = null;
 
+	/**
+	 * @var BfoxTooltipsController
+	 */
+	var $tooltips = null;
+
 	var $javaScriptVars = array();
 
 	function init() {
@@ -77,9 +82,14 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 	/**
 	 * @return BfoxRefLinker
 	 */
-	function basicLinker() {
+	function basicLinker($useTooltips = true) {
 		$linker = new BfoxRefLinker();
 		$linker->attributeCallbacks['href'] = $this->functionWithName('urlForRefStr');
+
+		if ($useTooltips && !is_null($this->tooltips)) {
+			$linker->addClass($this->tooltips->linkClass);
+		}
+
 		return $linker;
 	}
 
