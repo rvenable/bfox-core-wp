@@ -30,6 +30,11 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 
 	var $javaScriptVars = array();
 
+	/**
+	 * @var BfoxStackGroup
+	 */
+	var $stackGroup = null;
+
 	function init() {
 		parent::init();
 
@@ -40,6 +45,8 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 		require_once $this->apiDir . '/bfox_ref-functions.php';
 		require_once $this->apiDir . '/bfox_ref-template.php';
 
+		$this->stackGroup = new BfoxStackGroup();
+
 		// declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
 		// See: http://www.garyc40.com/2010/03/5-tips-for-using-ajax-in-wordpress/
 		$this->javaScriptVars = array(
@@ -47,31 +54,22 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 		);
 	}
 
-	private $linkerStack = array();
-
-	/**
-	 * @var BfoxRefLinker
-	 */
-	private $currentLinker = null;
-
-	function pushRefLinker(BfoxRefLinker $linker) {
-		if (!is_null($this->currentLinker)) $this->linkDefaults []= $this->currentLinker;
-		$this->currentLinker = $linker;
+	function pushRefLinker(BfoxRefLinker $item) {
+		$this->stackGroup->push('refLinker', $item);
 	}
 
 	/**
 	 * @return BfoxRefLinker
 	 */
 	function popLinker() {
-		$this->currentLinker = array_pop($this->linkDefaults);
-		return $this->currentLinker;
+		return $this->stackGroup->pop('refLinker');
 	}
 
 	/**
 	 * @return BfoxRefLinker
 	 */
 	function currentLinker() {
-		return $this->currentLinker;
+		return $this->stackGroup->current('refLinker');
 	}
 
 	function refReplaceCallback() {

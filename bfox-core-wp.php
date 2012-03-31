@@ -38,6 +38,8 @@ require_once dirname(__FILE__) . '/bfox_array.php';
 require_once dirname(__FILE__) . '/bfox_html.php';
 require_once dirname(__FILE__) . '/bfox_string.php';
 require_once dirname(__FILE__) . '/bfox_options.php';
+require_once dirname(__FILE__) . '/bfox_stack.php';
+require_once dirname(__FILE__) . '/bfox_stack_group.php';
 require_once dirname(__FILE__) . '/bfox_plugin_controller.php';
 require_once dirname(__FILE__) . '/bfox_base_root_plugin_controller.php';
 require_once dirname(__FILE__) . '/bfox_root_plugin_controller.php';
