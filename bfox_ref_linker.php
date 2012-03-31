@@ -66,7 +66,7 @@ class BfoxRefLinker extends BfoxObject {
 		return $this->linkForRefStr($ref->get_string(), $attributes);
 	}
 
-	function refReplaceCallback() {
+	function replaceCallback() {
 		return $this->functionWithName('linkForTextAndRef');
 	}
 }
