@@ -47,6 +47,8 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 
 		require_once $this->dir . '/bfox_refs_controller.php';
 		require_once $this->dir . '/bfox_ref_linker.php';
+		require_once $this->dir . '/bfox_ref_context.php';
+		require_once $this->dir . '/bfox_ajax_div.php';
 		require_once $this->refDir . '/biblefox-ref.php';
 		require_once $this->apiDir . '/bfox_ref-functions.php';
 		require_once $this->apiDir . '/bfox_ref-template.php';
@@ -60,6 +62,32 @@ class BfoxCoreController extends BfoxBaseRootPluginController {
 		$this->javaScriptVars = array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 		);
+	}
+
+	function wpInit() {
+		wp_register_script('bfox_ajax', $this->url . '/bfox_ajax.js', array('jquery'), $this->version);
+		wp_localize_script('bfox_ajax', 'BfoxAjax', $this->javaScriptVars);
+	}
+
+	private $divs = array();
+
+	/**
+	 * @return BfoxAjaxDiv
+	 */
+	function ajaxDiv($id) {
+		if (isset($this->divs[$id])) return $this->divs[$id];
+		return null;
+	}
+
+	/**
+	 * @return BfoxAjaxDiv
+	 */
+	function registerAjaxDiv(BfoxAjaxDiv $div, $enableNoPrivilege = false) {
+		if ($enableNoPrivilege) {
+			$div->enableNoPrivilege();
+		}
+		$this->divs[$div->id] = $div;
+		return $div;
 	}
 }
 
