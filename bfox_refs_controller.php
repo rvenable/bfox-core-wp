@@ -70,6 +70,53 @@ class BfoxRefsController extends BfoxPluginController {
 		return $this->core->stackGroup->current('refLinker');
 	}
 
+	private $contexts = array();
+	var $mainContextName = 'main';
+
+	/**
+	 * @param string $name
+	 * @return BfoxRefContext
+	 */
+	function contextForName($name) {
+		if (empty($name)) return null;
+
+		if (!isset($this->contexts[$name])) {
+			$context = new BfoxRefContext($name, $this);
+			$this->contexts[$name] = $context;
+		}
+		return $this->contexts[$name];
+	}
+
+	/**
+	 * @return BfoxRefContext
+	 */
+	function mainContext() {
+		return $this->contextForName($this->mainContextName);
+	}
+
+	function pushContext(BfoxRefContext $context) {
+		$this->core->stackGroup->push('refContext', $context);
+
+		$linker = $this->basicLinkerForContext($context);
+		$this->pushLinker($linker);
+	}
+
+	/**
+	 * @return BfoxRefContext
+	 */
+	function popContext() {
+		$this->popLinker();
+
+		return $this->core->stackGroup->pop('refContext');
+	}
+
+	/**
+	 * @return BfoxRefContext
+	 */
+	function currentContext() {
+		return $this->core->stackGroup->current('refContext');
+	}
+
 	function replaceCallback() {
 		$linker = $this->currentLinker();
 		return $linker->replaceCallback();
@@ -86,6 +133,16 @@ class BfoxRefsController extends BfoxPluginController {
 			$linker->addClass($this->core->tooltips->linkClass);
 		}
 
+		return $linker;
+	}
+
+	/**
+	 * @return BfoxRefLinker
+	 */
+	function basicLinkerForContext(BfoxRefContext $context, $useTooltips = false) {
+		$linker = $this->basicLinker($useTooltips);
+		$linker->addClass('bfox-ref-context-updater');
+		$linker->attributeValues['data-selector'] = '.' . $context->dependencyName;
 		return $linker;
 	}
 
