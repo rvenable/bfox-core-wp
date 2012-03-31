@@ -17,12 +17,12 @@ class BfoxStackGroup {
 		$stack->push($item);
 	}
 
-	function pop() {
+	function pop($key) {
 		$stack = $this->stackForKey($key);
 		return $stack->pop();
 	}
 
-	function current() {
+	function current($key) {
 		$stack = $this->stackForKey($key);
 		return $stack->current();
 	}

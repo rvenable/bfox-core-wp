@@ -6,7 +6,7 @@ class BfoxStack {
 
 	function push($item) {
 		if (!is_null($this->currentItem)) $this->stack []= $this->currentItem;
-		$this->currentItem = $linker;
+		$this->currentItem = $item;
 	}
 
 	function pop() {
