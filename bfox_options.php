@@ -49,7 +49,11 @@ class BfoxOptions extends BfoxObject {
 	var $cookiePath = '/';
 
 	function cookie($name) {
-		return $_COOKIE[$this->cookieName($name)];
+		$name = $this->cookieName($name);
+		if (isset($_COOKIE[$name])) {
+			return $_COOKIE[$name];
+		}
+		return null;
 	}
 
 	function setCookie($name, $value) {
