@@ -33,18 +33,18 @@ jQuery(document).ready(function () {
 		return BfoxAjax.refreshDivForParameters(div, parameters);
 	};
 
+	BfoxAjax.refreshSelectorForKeyValue = function (selector, key, value) {
+		jQuery(selector).each(function () {
+			BfoxAjax.refreshDivForKeyValue(this, key, value);
+		});
+		return false;
+	};
+
 	/*
 	 * Set up DOM elements
 	 */
 
 	jQuery('a.bfox-ref-context-updater').live('click', function () {
-		var selector, ref;
-		selector = jQuery(this).attr('data-selector');
-		ref = jQuery(this).attr('data-ref');
-		jQuery(selector).each(function () {
-			BfoxAjax.refreshDivForKeyValue(this, 'ref', ref);
-		});
-
-		return false;
+		return BfoxAjax.refreshSelectorForKeyValue(jQuery(this).attr('data-selector'), 'ref', jQuery(this).attr('data-ref'));
 	});
 });
