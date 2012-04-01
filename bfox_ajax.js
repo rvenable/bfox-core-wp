@@ -53,4 +53,12 @@ jQuery(document).ready(function () {
 	jQuery('a.bfox-ref-context-updater').live('click', function () {
 		return BfoxAjax.refreshSelectorForKeyValue(jQuery(this).attr('data-selector'), 'ref', jQuery(this).attr('data-ref'));
 	});
+
+	// input elements should update Bible references on keyboard enter
+	jQuery('input.bfox-ref-context-updater').live('keypress', function (e) {
+		if (e.which == 13) {
+			e.preventDefault();
+			return BfoxAjax.refreshSelectorForKeyValue(jQuery(this).attr('data-selector'), 'ref', jQuery(this).val());
+		}
+	});
 });
