@@ -11,17 +11,23 @@ jQuery(document).ready(function () {
 		return url + ((url.indexOf('?') === -1) ? '?' : '&') + paramString;
 	};
 
+	BfoxAjax.refreshDivWithUrl = function (div, url) {
+		jQuery(div).fadeTo(BfoxAjax.refreshAnimationDuration, BfoxAjax.refreshAnimationOpacity, function () {
+		});
+		jQuery.get(url, function (response) {
+			jQuery(div).attr('data-url', response.refreshUrl);
+			jQuery(div).html(response.html);
+			jQuery(div).fadeTo(BfoxAjax.refreshAnimationDuration, 1.0);
+		});
+
+		return false;
+	};
+
 	BfoxAjax.refreshDivForParameters = function (div, parameters) {
 		var url;
 		url = jQuery(div).attr('data-url');
 		url = BfoxAjax.appendUrlWithParamString(url, parameters);
-
-		jQuery.get(url, function (response) {
-			jQuery(div).attr('data-url', response.refreshUrl);
-			jQuery(div).html(response.html);
-		});
-
-		return false;
+		return BfoxAjax.refreshDivWithUrl(div, url);
 	};
 
 	BfoxAjax.refreshDivForKeyValue = function (div, key, value) {
