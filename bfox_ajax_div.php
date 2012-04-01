@@ -5,6 +5,8 @@ class BfoxAjaxDiv extends BfoxObject {
 	var $id;
 	var $classes = array('bfox-ajax-div');
 
+	protected $loadDynamically = false;
+
 	function __construct($name) {
 		$this->name = $name;
 		$this->id = 'bfox-ajax-div-' . $this->name;
@@ -52,7 +54,7 @@ class BfoxAjaxDiv extends BfoxObject {
 	function echoInitialContent() {
 		?>
 		<div id="<?php echo $this->id; ?>" class="<?php echo implode(' ', $this->classes); ?>" data-url="<?php echo $this->refreshUrl(); ?>">
-			<?php $this->echoContent(); ?>
+			<?php if (!$this->loadDynamically) $this->echoContent(); ?>
 		</div>
 		<?php
 	}
@@ -81,6 +83,21 @@ class BfoxAjaxDiv extends BfoxObject {
 		if (!in_array($class, $this->classes)) {
 			$this->classes []= $class;
 		}
+	}
+
+	function removeClass($class) {
+		$key = array_search($class, $this->classes);
+		unset($this->classes[$key]);
+	}
+
+	function loadDynamically($loadDynamically = true) {
+		if ($loadDynamically) {
+			$this->addClass('bfox-ajax-dynamic');
+		}
+		else {
+			$this->removeClass('bfox-ajax-dynamic');
+		}
+		$this->loadDynamically = $loadDynamically;
 	}
 }
 

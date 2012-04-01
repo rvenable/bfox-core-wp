@@ -50,6 +50,12 @@ jQuery(document).ready(function () {
 	 * Set up DOM elements
 	 */
 
+	// .bfox-ajax-dynamic should refresh once after the page loads
+	jQuery('.bfox-ajax-dynamic').each(function () {
+		BfoxAjax.refreshDivWithUrl(this, jQuery(this).attr('data-url'));
+	});
+
+	// anchor elements
 	jQuery('a.bfox-ref-context-updater').live('click', function () {
 		return BfoxAjax.refreshSelectorForKeyValue(jQuery(this).attr('data-selector'), 'ref', jQuery(this).attr('data-ref'));
 	});
