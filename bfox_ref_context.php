@@ -3,6 +3,7 @@
 class BfoxRefContext extends BfoxObject {
 	var $name;
 	var $dependencyName;
+	var $updaterClass;
 
 	/**
 	 * @var BfoxRef
@@ -20,6 +21,7 @@ class BfoxRefContext extends BfoxObject {
 		$this->name = $name;
 		$this->refsController = $refsController;
 		$this->dependencyName = 'depends-bfox-ref-context-' . $this->name;
+		$this->updaterClass = 'bfox-ref-context-updater';
 
 		parent::__construct();
 
@@ -41,6 +43,10 @@ class BfoxRefContext extends BfoxObject {
 			$this->ref = $ref;
 			$this->setLastViewedRefStr($ref->get_string());
 		}
+	}
+
+	function dependencySelectorAttribute() {
+		return 'data-selector=".' . $this->dependencyName . '"';
 	}
 
 	function lastViewedRefStr() {
