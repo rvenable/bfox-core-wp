@@ -18,6 +18,44 @@ class BfoxRefsController extends BfoxPluginController {
 		$this->options = new BfoxOptions('bfox_refs');
 	}
 
+	/**
+	 * Returns a string of links for the passed in Bible reference, uses separate links for each individual range of verses
+	 *
+	 * Example: Genesis 1-2,4 would become two separate links [Genesis 1-2]; [Genesis 4] because chapters 1-2 are not contiguous with chapter 4
+	 * For returning [Genesis 1-2,4] use the link() function
+	 *
+	 * @param mixed $ref string or BfoxRef
+	 * @param array $attributes Attributes for the links
+	 * @return string
+	 */
+	function links($ref, $attributes = array()) {
+		if (!is_a($ref, 'BfoxRef')) {
+			$ref = new BfoxRef($ref);
+		}
+
+		$serializer = new BfoxRefSerializer();
+		$serializer->setCombineNone();
+		$elements = $serializer->elementsForRef($ref);
+
+		$linksString = '';
+		foreach ($elements as $index => $element) {
+			if ($index % 2 == 0) $linksString .= $this->link($element, $attributes);
+			else $linksString .= $element;
+		}
+
+		return $linksString;
+	}
+
+	/**
+	 * Returns a single link for the passed in Bible reference
+	 *
+	 * Example: Genesis 1-2,4 would become two separate links [Genesis 1-2,4]
+	 * For returning separate links - [Genesis 1-2]; [Genesis 4], use the links() function
+	 *
+	 * @param mixed $refStr string or BfoxRef
+	 * @param array $attributes Attributes for the links
+	 * @return string
+	 */
 	function link($refStr, $attributes = array()) {
 		if (is_a($refStr, 'BfoxRef')) {
 			$refStr = $refStr->get_string();
